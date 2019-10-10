@@ -10,7 +10,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(128), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    
+    alive = db.Column(db.Boolean, default=True)
     role = db.Column(db.Integer, default=1)
     ''' USER ROLE IDS:
         1: Serf (user)
