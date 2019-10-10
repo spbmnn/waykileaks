@@ -1,0 +1,11 @@
+{%extends "base.html"%}
+
+{%block content%}
+{%for quote in quotes%}
+  <hr>
+  <p><em>this is where a vote button would go</em></p>
+  <h3><a href="/quote/{{quote.id}}">Quote #{{quote.id}}</a></h3>
+  <blockquote>{{quote.body}}</blockquote>
+  <p>&mdash; <a href="/speaker/{{quote.speaker.id}}">{{quote.speaker.name}}</a>, on {{quote.topic}}, <i>yeargohere</i></p>
+{% endfor %}
+{% endblock %}

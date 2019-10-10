@@ -12,6 +12,10 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
 
+from app import models, forms, \
+        account, admin, profile, \
+        posts
+
 @app.errorhandler(404)
 def not_found(error):
     return render_template('404.html'), 404
@@ -24,4 +28,3 @@ def not_found(error):
 def forbidden(error):
     return render_template('forbidden.html'), 403
 
-from app import routes, models, posts

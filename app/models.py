@@ -28,6 +28,12 @@ class User(UserMixin, db.Model):
     def get_role(self):
         return self.role
     
+    def get_karma(self):
+        karma = 0
+        for quote in self.submissions:
+            karma += quote.score
+        return karma
+
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
