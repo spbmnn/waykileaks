@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!--
+ _       __            __   _ __               __       
+| |     / /___ ___  __/ /__(_) /   ___  ____ _/ /_______
+| | /| / / __ `/ / / / //_/ / /   / _ \/ __ `/ //_/ ___/
+| |/ |/ / /_/ / /_/ / ,< / / /___/  __/ /_/ / ,< (__  ) 
+|__/|__/\__,_/\__, /_/|_/_/_____/\___/\__,_/_/|_/____/  
+             /____/       The People Need To Know The Truth! -->
+    {% if title %}
+      <title>{{ title }} ⁂ WaykiLeaks</title>
+    {% else %}
+      <title>WaykiLeaks: The People Need To Know The Truth!</title>
+    {% endif %}
+  </head>
+  <body>
+    <header>
+      <div>
+        <a href="{{ url_for('index') }}">WaykiLeaks.org</a>
+        <p id="tagline">The People Need To Know The Truth!</p>
+      </div>
+      {% if current_user.is_anonymous %}
+      <div></div>
+      <div><a href="{{ url_for('login') }}">log in</a></div>
+      {% else %}
+      <div><a href="{{ url_for('submit') }}">submit a quote</a></div>
+      <div>
+        <p>{{ current_user.username }}</p>
+        <a href="{{ url_for('logout') }}">log out</a>
+      </div>
+      {% endif %}
+    </header>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <section id="flash">
+      {% for message in messages %}
+      <p class="flash">{{ message }}</p>
+      {% endfor %}
+    </section>
+    {% endif %}
+    {% endwith %}
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+    <footer>
+      &copy; 2019 WaykiLeaks
+    </footer>
+  </body>
+</html>

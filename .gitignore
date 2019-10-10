@@ -1,0 +1,6 @@
+venv
+app.db
+migrations/
+__pycache__/
+*.pyc
+.DS_Store
