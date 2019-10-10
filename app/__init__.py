@@ -14,7 +14,7 @@ login.login_view = 'login'
 
 from app import models, forms, \
         account, admin, profile, \
-        posts
+        quotes
 
 @app.errorhandler(404)
 def not_found(error):
