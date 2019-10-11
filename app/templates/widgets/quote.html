@@ -1,0 +1,14 @@
+<h3>Quote #{{quote.id}}</h2>
+{%block content%}
+<h2>Quote #{{quote.id}}{%if not current_user.is_anonymous()%}
+&nbsp;<a href="/vote/{{quote.id}}/" class="votebutton">{%if quote.hasvoted(current_user.id) %}▲{%else%}△{%endif%}</h2>
+<blockquote>{{quote.body}}</blockquote>
+<p>&mdash; <a href="/speaker/{{quote.speaker.id}}">{{quote.speaker.name}}</a>, on {{quote.topic}}, <b>{{quote.created.strftime('%Y')}}</b></p>
+<small class="attr">posted by <a href="/user/{{quote.submitter.username}}/">{{quote.submitter.username}}</a>
+{%if current_user.role > 2%}
+<a href="/approve/q/{{quote.id}}">accelerate</a>
+<a href="/hide/q/{{quote.id}}">reprobate</a>
+    {%if current_user.role > 3%}
+    <a href="/delete/q/{{quote.id}}">defenestrate</a>
+    {%endif%}
+{%endif%}

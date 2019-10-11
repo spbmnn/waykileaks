@@ -1,0 +1,19 @@
+<h2>{{ user.username }}{%if user.role > 1%}<sup>{%if user.role == 3%}⁑{%elif user.role == 4%}⁂{%else%}*{%endif%}</sup>{%endif%}</h2>
+<p class="karma">Karma: {{user.get_karma()}}
+<hr>
+
+{%if current_user.role > 2%}
+    {%if user.alive%}<a href="/ban/{{user.username}}/">defenestrate</a>
+    {%else%}<a href="/unban/{{user.username}}/">refenestrate</a>{%endif%}
+{%elif current_user.role > 3%}
+<a href="/promote/{{user.username}}">promote</a> | <a href="/demote/{{user.username}}">demote</a>
+{%endif%}}
+
+{%if stats%}<h2>Stats</h2>{%if stats%}
+
+{%if showquotes%}
+{%for quote in approvedquotes%}
+<hr>
+<a href="/quote/{{quote.id}}">{{quote.id}}</a>
+{%endfor%}
+{%endif%}

@@ -23,3 +23,11 @@ def submit():
         return redirect(url_for('index'))
     return render_template('forms/submit.html', form=form)
 
+@app.route('/vote/<id>/')
+@login_required
+def vote(id):
+    id = int(id)
+    quote = Quote.query.filter_by(id=id).first()
+    user = current_user
+    quote.vote(user_id)
+    return redirect(url_for('quote_page', id=str(id)))

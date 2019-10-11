@@ -53,9 +53,9 @@ class Quote(db.Model):
     topic = db.Column(db.String(256))
     created = db.Column(db.DateTime, default=datetime.utcnow)
     submitter = db.relationship(User, backref='submissions')
-    user_id = db.Column(db.Integer, db.ForeignKey(User.id))
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id)) # not entirely sure if this is necessary
     speaker = db.relationship(Speaker, backref='quotes')
-    speaker_id = db.Column(db.Integer, db.ForeignKey(Speaker.id))
+    speaker_id = db.Column(db.Integer, db.ForeignKey(Speaker.id)) # this too
     published = db.Column(db.Boolean, default=False)
     score = db.Column(db.Integer, default=1)
 
