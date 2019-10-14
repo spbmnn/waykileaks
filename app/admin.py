@@ -3,6 +3,17 @@ from flask_login import current_user, login_required
 from app import app, db
 from app.models import User, Speaker, Quote
 
+@app.route('/admin/')
+@login_required
+def admin_home():
+    if current_user.role < 3:
+        return render_template('forbidden.html'), 403
+    return "it's not ready yet!!!!!"
+
+###                                 ###
+# User Promotion/Demotion/Destruction #
+###                                 ###
+
 @app.route('/promote/<username>/')
 @login_required
 def promote(username):
@@ -32,6 +43,38 @@ def demote(username):
     db.session.add(user)
     db.session.commit()
     flash('demoted ' + username + ' to level ' + str(user.role))
+    return redirect(url_for('index'))
+
+@app.route('/ban/<username>/')
+@login_required
+def ban(username):
+    if current_user.role < 3:
+        return render_template('forbidden.html'), 302
+    user = User.query.filter_by(username=username).first_or_404()
+    if user.alive:
+        user.alive = False
+        db.session.add(user)
+        db.session.commit()
+    else:
+        flash('user is already banned.')
+        return redirect(url_for('index'))
+    flash(username + ' is no more.')
+    return redirect(url_for('index'))
+
+@app.route('/unban/<username>/')
+@login_required
+def unban(username):
+    if current_user.role < 3:
+        return render_template('forbidden.html'), 302
+    user = User.query.filter_by(username=username).first_or_404()
+    if user.alive:
+        flash('user is not banned.')
+        return redirect(url_for('index'))
+    else:
+        user.alive = True
+        db.session.add(user)
+        db.session.commit()
+    flash(username + ' is more.')
     return redirect(url_for('index'))
 
 ###                               ###
@@ -64,7 +107,7 @@ def unapprove_quote(id):
     flash('Quote #' + str(id) + ' has been approved.')
     return redirect(url_for('index'))
 
-@app.route('/delete/q/<id>/')
+@app.route('/delete/q/<id>/') # TODO: make this a form / implement reason for removal 4 emailz
 @login_required
 def delete_quote(id):
     id = int(id)

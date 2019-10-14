@@ -1,13 +1,4 @@
 {%extends "base.html"%}
 {%block content%}
-<h2>Quote #{{quote.id}}</h2>
-<blockquote>{{quote.body}}</blockquote>
-<p>&mdash; <a href="/speaker/{{quote.speaker.id}}">{{quote.speaker.name}}</a>, on {{quote.topic}}, <b>yeargohere</b></p>
-{%if current_user.role > 2%}
-<a href="/approve/q/{{quote.id}}">accelerate</a>
-<a href="/hide/q/{{quote.id}}">reprobate</a>
-{%if current_user.role > 3%}
-<a href="/delete/q/{{quote.id}}">defenestrate</a>
-{%endif%}
-{%endif%}
+{%include "widgets/quote.html"%}
 {%endblock%}

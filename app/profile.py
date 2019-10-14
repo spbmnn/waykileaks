@@ -1,7 +1,7 @@
 '''
 Profile
 -------
-Handles individual user, speaker, and quote pages.
+Handles individual/communal user, speaker, and quote pages.
 '''
 # TODO: Give /profiles/ a base.html
 # TODO: Consolidate /profiles/user.html, speaker.html, & quote.html

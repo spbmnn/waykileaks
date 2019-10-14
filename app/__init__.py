@@ -16,7 +16,7 @@ mail = Mail(app)
 
 from app import models, forms, \
         account, admin, profile, \
-        posts
+        quotes, index
 
 @app.errorhandler(404)
 def not_found(error):

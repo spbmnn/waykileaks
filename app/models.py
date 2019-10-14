@@ -10,7 +10,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(128), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    
+    alive = db.Column(db.Boolean, default=True)
     role = db.Column(db.Integer, default=1)
     ''' USER ROLE IDS:
         1: Serf (user)
@@ -53,9 +53,9 @@ class Quote(db.Model):
     topic = db.Column(db.String(256))
     created = db.Column(db.DateTime, default=datetime.utcnow)
     submitter = db.relationship(User, backref='submissions')
-    user_id = db.Column(db.Integer, db.ForeignKey(User.id))
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id)) # not entirely sure if this is necessary
     speaker = db.relationship(Speaker, backref='quotes')
-    speaker_id = db.Column(db.Integer, db.ForeignKey(Speaker.id))
+    speaker_id = db.Column(db.Integer, db.ForeignKey(Speaker.id)) # this too
     published = db.Column(db.Boolean, default=False)
     score = db.Column(db.Integer, default=1)
 

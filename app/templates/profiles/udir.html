@@ -2,12 +2,6 @@
 
 {% block content %}
 {% for user in users %}
-  <hr>
-  <h3><a href="/user/{{ user.username }}">{{ user.username }}</a></h3>
-  {%if current_user.role > 3%}
-  <a href="/promote/{{user.username}}">promote</a> | <a href="/demote/{{user.username}}">demote</a>
-  {%endif%}
-  <p>Karma: <em>not ready yet</em></p>
-
+{%include "widgets/user.html%}
 {% endfor %}
 {% endblock %}
