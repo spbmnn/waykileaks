@@ -15,7 +15,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if not user.alive:
+        if not user.get_existence():
             flash('Sorry, your account has been banned for some reason or another.\n \
             For more info, please send us an email.')
             return redirect(url_for('index'))

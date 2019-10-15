@@ -5,7 +5,7 @@ from app.models import User, Speaker, Quote
 
 @app.route('/')
 def index():
-    if current_user.is_anonymous(): # user not logged in
+    if current_user.is_anonymous: # user not logged in
         return render_template('base.html')
     elif current_user.role > 2: # king, vassal
         return redirect(url_for('admin_home'))

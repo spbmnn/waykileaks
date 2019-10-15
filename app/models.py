@@ -21,25 +21,32 @@ class User(UserMixin, db.Model):
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
-    
+
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
     def get_role(self):
         return self.role
-    
+
     def get_karma(self):
         karma = 0
         for quote in self.submissions:
             karma += quote.score
         return karma
 
+    def get_existence(self):
+        return self.alive
+
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
 @login.user_loader
 def load_user(id):
-    return User.query.get(int(id))
+    u = User.query.get(int(id))
+    if u:
+        return u
+    else:
+        return None
 
 class Speaker(db.Model):
     __tablename__ = 'speaker'
@@ -76,13 +83,16 @@ class Quote(db.Model):
 
     def has_voted(self, user_id):
         select_votes = quote_upvotes.select(
-                db.and_(
-                    quote_upvotes.c.user_id == user_id,
-                    quote_upvotes.c.quote_id == self.id
-                )
+            db.and_(
+                quote_upvotes.c.user_id == user_id,
+                quote_upvotes.c.quote_id == self.id
+            )
         )
-        rs = db.engine.execute(select_votes)
-        return False if rs.rowcount == 0 else True
+        rs = db.engine.execute(select_votes).first()
+        if rs is None: # the original thing had rowcount but that's always -1??
+            return False
+        else:
+            return True
 
     def vote(self, user_id): # big props to codelucas for this flask-reddit thing thang. i am not skilled enough to do this alone.
         already_voted = self.has_voted(user_id)
@@ -93,7 +103,7 @@ class Quote(db.Model):
                     user_id = user_id,
                     quote_id = self.id
             )
-            self.votes += 1
+            self.score += 1
             vote_status = True
         else:
             db.engine.execute(
@@ -104,14 +114,14 @@ class Quote(db.Model):
                         )
                     )
             )
-            self.votes -= 1
+            self.score -= 1
             vote_status = False
         db.session.commit()
         return vote_status
 
 quote_upvotes = db.Table('quote_upvotes',
         db.Column('user_id', db.Integer, db.ForeignKey(User.id)),
-        db.Column('thread_id', db.Integer, db.ForeignKey(Quote.id))
+        db.Column('quote_id', db.Integer, db.ForeignKey(Quote.id))
 )
 
 db.create_all()

@@ -29,5 +29,5 @@ def vote(id):
     id = int(id)
     quote = Quote.query.filter_by(id=id).first()
     user = current_user
-    quote.vote(user_id)
+    quote.vote(user.id)
     return redirect(url_for('quote_page', id=str(id)))

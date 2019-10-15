@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if current_user.role > 3 %}
+<p>you are the magic magic man</p>
+{% endif %}
+<h3 id="allquotes">All Quotes</h3>
+{% for quote in quotes %}
+{% include "widgets/quote.html" %}
+{% endfor %}
+<hr>
+<h3 id="everything">Everything, Everything</h3>
+<h4>Users</h4>
+{% for user in users %}
+{% include "widgets/user.html" %}
+{% endfor %}
+<h4>Speakers</h4>
+{% for speaker in speakers %}
+<a href="/speaker/{{ speaker.id }}">{{ speaker.name }}</a>
+{% endfor %}
+{% endblock content %}

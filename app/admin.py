@@ -8,7 +8,10 @@ from app.models import User, Speaker, Quote
 def admin_home():
     if current_user.role < 3:
         return render_template('forbidden.html'), 403
-    return "it's not ready yet!!!!!"
+    users = User.query.order_by(User.id)
+    quotes = Quote.query.order_by(Quote.id)
+    speakers = Speaker.query.order_by(Speaker.id)
+    return render_template('admin/dash.html', users=users, quotes=quotes, speakers=speakers)
 
 ###                                 ###
 # User Promotion/Demotion/Destruction #
@@ -51,7 +54,10 @@ def ban(username):
     if current_user.role < 3:
         return render_template('forbidden.html'), 302
     user = User.query.filter_by(username=username).first_or_404()
-    if user.alive:
+    if user.get_existence():
+        if user.role >= current_user.role:
+            flash('you cannot ban someone of equal or higher status, foul being.')
+            return redirect(url_for('index'))
         user.alive = False
         db.session.add(user)
         db.session.commit()
@@ -67,7 +73,7 @@ def unban(username):
     if current_user.role < 3:
         return render_template('forbidden.html'), 302
     user = User.query.filter_by(username=username).first_or_404()
-    if user.alive:
+    if user.get_existence():
         flash('user is not banned.')
         return redirect(url_for('index'))
     else:
