@@ -4,9 +4,11 @@
 {% if current_user.role > 3 %}
 <p>you are the magic magic man</p>
 {% endif %}
-<h3 id="allquotes">All Quotes</h3>
+<h3 id="quotes">Quotes Requiring Approval</h3>
 {% for quote in quotes %}
+{% if not quote.published %}
 {% include "widgets/quote.html" %}
+{% endif %}
 {% endfor %}
 <hr>
 <h3 id="everything">Everything, Everything</h3>
