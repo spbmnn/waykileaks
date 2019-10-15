@@ -1,7 +1,6 @@
-from flask import render_template, request, flash, redirect, url_for
-from flask_login import current_user, login_required
-from app import app, db
-from app.models import User, Speaker, Quote
+from flask import render_template, redirect, url_for
+from flask_login import current_user
+from app import app
 
 @app.route('/')
 def index():
