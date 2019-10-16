@@ -1,6 +1,7 @@
 from flask import render_template, request, flash, redirect, url_for
 from flask_login import current_user, login_required
 from app import app, db
+from app.forms import DenyQuoteForm
 from app.models import User, Speaker, Quote
 
 @app.route('/admin/')
@@ -83,9 +84,9 @@ def unban(username):
     flash(username + ' is more.')
     return redirect(url_for('index'))
 
-###                               ###
-# Quote Approval/Denial/Destruction #
-###                               ###
+###                   ###
+# Quote Approval/Denial #
+###                   ###
 
 @app.route('/approve/q/<id>/')
 @login_required
@@ -95,32 +96,47 @@ def approve_quote(id):
         return render_template('forbidden.html'), 403
     quote = Quote.query.filter_by(id=id).first_or_404()
     quote.published = True
+    quote.moderated = True
     db.session.add(quote)
     db.session.commit()
     flash('Quote #' + str(id) + ' has been approved.')
     return redirect(request.args.get('target', url_for('index'), type=str))
 
-@app.route('/hide/q/<id>/')
+@app.route('/deny/q/<id>/', methods=['GET', 'POST'])
 @login_required
-def unapprove_quote(id):
+def deny_quote(id):
     id = int(id)
     if current_user.role < 3:
         return render_template('forbidden.html'), 403
     quote = Quote.query.filter_by(id=id).first_or_404()
-    quote.published = False
-    db.session.add(quote)
-    db.session.commit()
-    flash('Quote #' + str(id) + ' has been approved.')
-    return redirect(url_for('index'))
+    form = DenyQuoteForm(id=str(id))
+    if form.validate_on_submit():
+        quote.deny_reason = form.reason.data
+        quote.published = False
+        quote.moderated = True
+        quote.score = 0
+        db.session.add(quote)
+        db.session.commit()
+        flash('Quote #' + str(id) + ' has been denied. Reason: ' + form.reason.data)
+        # Put submitter email notification here.
+        return redirect(url_for('index'))
+    return render_template('forms/denyquote.html', form=form)
 
-@app.route('/delete/q/<id>/') # TODO: make this a form / implement reason for removal 4 emailz
+@app.route('/merge/<id1>/into/<id2>/') #merge
 @login_required
-def delete_quote(id):
-    id = int(id)
+def merge_speakers(id1, id2):
     if current_user.role < 4:
         return render_template('forbidden.html'), 403
-    quote = Quote.query.filter_by(id=id).first_or_404()
-    quote.delete(synchronize_session=True)
+    id1 = int(id1)
+    id2 = int(id2)
+    speaker1 = Speaker.query.filter_by(id=id1).first_or_404()
+    print("Got speaker1: " + speaker1.name)
+    speaker2 = Speaker.query.filter_by(id=id2).first_or_404()
+    print("Got speaker2: " + speaker2.name)
+    for quote in speaker1.quotes:
+        quote.speaker = speaker2
+        quote.speaker_id = id2
+        db.session.add(quote)
     db.session.commit()
-    flash('Quote #' + str(id) + ' has been deleted.')
+    flash('Merged ' + speaker1.name + ' quotes into ' + speaker2.name)
     return redirect(url_for('index'))

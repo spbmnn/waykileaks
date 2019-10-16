@@ -1,0 +1,12 @@
+WaykiLeaks
+Official Bulletin
+-----------------
+
+To: {{ user.username }} <{{ user.email }}>
+
+Have you forgotten your password?
+Shameful.
+No worries, reset it here:
+{{ url_for('reset_password', token=token, _external=True) }}
+
+~wl

@@ -3,6 +3,6 @@
 <h2>{{speaker.name}}</h2>
 {%for quote in canonquotes%}
 <hr>
-<a href="/quote/{{quote.id}}">{{quote.id}}</a>
+{% include "widgets/quote.html" %}
 {%endfor%}
 {%endblock%}

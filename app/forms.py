@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, \
+    IntegerField
 from wtforms.validators import DataRequired, Email, EqualTo
 from app.models import User, Quote
 
@@ -32,3 +33,16 @@ class SubmitForm(FlaskForm):
     topic = StringField('On', validators=[DataRequired()])
     submit = SubmitField('Submit quote')
 
+class ResetPasswordRequestForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    password2 = PasswordField('Verify Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Reset password')
+
+class DenyQuoteForm(FlaskForm):
+    id = IntegerField('Quote ID', validators=[DataRequired()])
+    reason = StringField('Reason', validators=[DataRequired()])
+    submit = SubmitField('Submit')

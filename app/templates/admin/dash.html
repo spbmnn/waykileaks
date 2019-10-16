@@ -4,9 +4,9 @@
 {% if current_user.role > 3 %}
 <p>you are the magic magic man</p>
 {% endif %}
-<h3 id="quotes">Quotes Requiring Approval</h3>
+<h3 id="quotes">Quotes Requiring Decision</h3>
 {% for quote in quotes %}
-{% if not quote.published %}
+{% if not quote.moderated %}
 {% include "widgets/quote.html" %}
 {% endif %}
 {% endfor %}

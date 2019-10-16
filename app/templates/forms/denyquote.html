@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Deny Quote</h1>
+<form method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.id.label }}<br>
+        {{ form.id(size=8) }}<br>
+        {% for error in form.id.errors %}
+        <span>[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.reason.label }}<br>
+        {{ form.reason(size=64) }}<br>
+        {% for error in form.reason.errors %}
+        <span>[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit() }}</p>
+</form>
+{% endblock %}

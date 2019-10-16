@@ -23,11 +23,13 @@
         <a href="{{ url_for('index') }}">WaykiLeaks.org</a>
         <p id="tagline">The People Need To Know The Truth!</p>
       </div>
+      <div><a href="{{ url_for('quote_list') }}">quotes</div>
       {% if current_user.is_anonymous %}
       <div></div>
       <div><a href="{{ url_for('login') }}">log in</a></div>
       {% else %}
-      <div><a href="{{ url_for('submit') }}">submit a quote</a></div>
+      <div><a href="{{ url_for('submit') }}">submit a quote</a><br>
+      <a href="{{ url_for('user_directory') }}">users</a></div>
       <div>
         <p>{{ current_user.username }}</p>
         <a href="{{ url_for('logout') }}">log out</a>

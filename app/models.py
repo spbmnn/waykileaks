@@ -1,8 +1,9 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from datetime import datetime
-from app import login, db
-
+from app import app, login, db
+import jwt
+from time import time
 
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
@@ -37,6 +38,20 @@ class User(UserMixin, db.Model):
     def get_existence(self):
         return self.alive
 
+    def get_password_reset_token(self, expires_in=600):
+        return jwt.encode(
+                {'reset_password': self.id, 'exp': time() + expires_in},
+                app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            id = jwt.decode(token, app.config['SECRET_KEY'],
+                    algorithms=['HS256'])['reset_password']
+        except:
+            return
+        return User.query.get(id)
+
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
@@ -64,6 +79,8 @@ class Quote(db.Model):
     speaker = db.relationship(Speaker, backref='quotes')
     speaker_id = db.Column(db.Integer, db.ForeignKey(Speaker.id)) # this too
     published = db.Column(db.Boolean, default=False)
+    moderated = db.Column(db.Boolean, default=False)
+    deny_reason = db.Column(db.String(128))
     score = db.Column(db.Integer, default=1)
 
     def __init__(self, speaker_id, body, topic, user_id):

@@ -1,0 +1,8 @@
+<h1>WaykiLeaks</h1>
+<h2>Official Bulletin</h2>
+<hr>
+<p>To: {{ user.username }},</p>
+<p>Have you forgotten your password? Shameful.
+Feel free to reset it here:</p>
+<a href="{{ url_for('reset_password', token=token, _external=True) }}">{{ url_for('reset_password', token=token, _external=True) }}</a>
+<small>~wl</small>
