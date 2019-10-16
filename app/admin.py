@@ -114,7 +114,7 @@ def deny_quote(id):
         quote.deny_reason = form.reason.data
         quote.published = False
         quote.moderated = True
-        quote.score = 0
+        quote.score = 0 
         db.session.add(quote)
         db.session.commit()
         flash('Quote #' + str(id) + ' has been denied. Reason: ' + form.reason.data)

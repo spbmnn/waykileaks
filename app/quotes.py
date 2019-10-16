@@ -20,6 +20,7 @@ def submit():
         db.session.add(quote)
         db.session.commit()
         flash('Thanks for your quote on '+quote.topic+'!')
+        quote.vote(current_user.id)
         return redirect(url_for('index'))
     return render_template('forms/submit.html', form=form)
 

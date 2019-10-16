@@ -19,13 +19,9 @@ def user_directory():
 @app.route('/user/<username>/')
 def user_profile(username):
     user = User.query.filter_by(username=username).first_or_404()
-    submitcount = len(user.submissions)
-    approvedquotes = []
-    for quote in user.submissions:
-        if quote.published:
-            approvedquotes.append(quote)
-    return render_template('profiles/user.html', user=user, submitcount=submitcount,
-            approvedquotes=approvedquotes)
+    submitcount = str(len(user.submissions))
+    return render_template('profiles/user.html', user=user, showstats=True,
+        submitcount=submitcount, showquotes=True)
 
 @app.route('/quotes/')
 def quote_list():
@@ -42,8 +38,4 @@ def quote_page(id):
 def speaker_summary(id):
     id=int(id)
     speaker = Speaker.query.filter_by(id=id).first_or_404()
-    canonquotes = []
-    for quote in speaker.quotes:
-        if quote.published:
-            canonquotes.append(quote)
-    return render_template('profiles/speaker.html', speaker=speaker, canonquotes=canonquotes)
+    return render_template('profiles/speaker.html', speaker=speaker)

@@ -81,7 +81,7 @@ class Quote(db.Model):
     published = db.Column(db.Boolean, default=False)
     moderated = db.Column(db.Boolean, default=False)
     deny_reason = db.Column(db.String(128))
-    score = db.Column(db.Integer, default=1)
+    score = db.Column(db.Integer, default=0)
 
     def __init__(self, speaker_id, body, topic, user_id):
         self.speaker_id = speaker_id

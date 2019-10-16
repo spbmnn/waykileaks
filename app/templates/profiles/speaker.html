@@ -1,8 +1,8 @@
-{%extends "base.html"%}
-{%block content%}
-<h2>{{speaker.name}}</h2>
-{%for quote in canonquotes%}
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ speaker.name }}</h2>
+{% for quote in speaker.quotes %}{% if quote.published %}
 <hr>
 {% include "widgets/quote.html" %}
-{%endfor%}
-{%endblock%}
+{% endif %}{% endfor %}
+{% endblock %}

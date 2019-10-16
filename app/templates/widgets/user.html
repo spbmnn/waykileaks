@@ -13,11 +13,13 @@
 <a href="/promote/{{user.username}}">promote</a> | <a href="/demote/{{user.username}}">demote</a>
 {% endif %}
 
-{% if stats %}<h2>Stats</h2>{% endif %}
+{% if showstats %}<h2>Stats</h2>
+<p><b>Submitted Quotes:</b> {{ submitcount }}</p>
+{% endif %}
 
 {% if showquotes %}
-{% for quote in approvedquotes %}
+{% for quote in user.submissions %}{% if quote.published %}
 <hr>
-<a href="/quote/{{quote.id}}">{{ quote.id }}</a>
-{% endfor %}
+{% include "widgets/quote.html" %}
+{% endif %}{% endfor %}
 {% endif %}
