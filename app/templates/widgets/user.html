@@ -6,11 +6,13 @@
 <p class="karma">Karma: {{ user.get_karma() }}
 <hr>
 
+{% if not current_user.is_anonymous %}
 {% if current_user.role > 2 %}
     {% if user.get_existence() %}<a href="/ban/{{user.username}}/">defenestrate</a>
     {% else %}<a href="/unban/{{user.username}}/">refenestrate</a>{%endif%}
 {% elif current_user.role > 3 %}
 <a href="/promote/{{user.username}}">promote</a> | <a href="/demote/{{user.username}}">demote</a>
+{% endif %}
 {% endif %}
 
 {% if showstats %}<h2>Stats</h2>

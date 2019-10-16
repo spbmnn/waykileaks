@@ -4,8 +4,10 @@
 <blockquote>{{ quote.body }}</blockquote>
 <p>&mdash; <a href="/speaker/{{ quote.speaker.id }}">{{ quote.speaker.name }}</a>, on {{ quote.topic }}, <b>{{ quote.created.strftime('%Y') }}</b></p>
 <small class="attr">posted by <a href="/user/{{ quote.submitter.username }}/">{{ quote.submitter.username }}</a>
+{% if not current_user.is_anonymous %}
 {% if current_user.role > 2 %}
 <a href="/approve/q/{{quote.id}}">accelerate</a>
 <a href="/deny/q/{{quote.id}}">reprobate</a>
+{% endif %}
 {% endif %}
 </small>
