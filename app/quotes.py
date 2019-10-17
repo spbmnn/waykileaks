@@ -17,6 +17,8 @@ def submit():
             flash('New speaker ' + speaker.name + ' added.')
         quote = Quote(user_id=current_user.id, speaker_id=speaker.id,
                 body=form.body.data, topic=form.topic.data)
+        if current_user.role > 1:
+            quote.published = True
         db.session.add(quote)
         db.session.commit()
         flash('Thanks for your quote on '+quote.topic+'!')
