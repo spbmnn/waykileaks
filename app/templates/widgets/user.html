@@ -1,11 +1,11 @@
+<section class="box">
 <h2><a href="{{ url_for('user_profile', username=user.username ) }}" class="topage">{{ user.username }}</a>
     {% if user.role > 1 %}
     <sup>{% if user.role == 3 %}⁑
         {% elif user.role == 4 %}⁂
         {% else %}*{% endif %}</sup>{% endif %}</h2>
 <p class="karma">Karma: {{ user.get_karma() }}
-<hr>
-
+<br>
 {% if not current_user.is_anonymous %}
 {% if current_user.role > 2 %}
     {% if user.get_existence() %}<a href="/ban/{{user.username}}/">defenestrate</a>
@@ -24,3 +24,4 @@
 {% include "widgets/quote.html" %}
 {% endif %}{% endfor %}
 {% endif %}
+</section>

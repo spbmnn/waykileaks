@@ -19,7 +19,7 @@ def user_directory():
 
 @app.route('/user/<username>/')
 def user_profile(username):
-    user = User.query.filter_by(username=username).first_or_404()
+    user = User.query.filter_by(username.lower()=username.lower()).first_or_404()
     submitcount = str(len(user.submissions))
     return render_template('profiles/user.html', user=user, showstats=True,
         showquotes=True)

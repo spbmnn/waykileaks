@@ -1,4 +1,4 @@
-<section class="quotebox">
+<section class="box">
 <h2>Quote #<a href="{{ url_for('quote_page', id=quote.id|string) }}" class="topage">{{ quote.id }}</a>&nbsp;
 {% if not current_user.is_anonymous %}
 <a href="/vote/{{ quote.id }}/" class="votebutton {% if quote.has_voted(current_user.id) %}voted{% endif %}">▲</a>
