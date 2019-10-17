@@ -12,7 +12,8 @@ def send_email(subject, sender, recipients, text_body, html_body):
 
 def send_password_reset_email(user):
     token = user.get_password_reset_token()
-    send_email('[WaykiLeaks] So you forgot your password',
+    send_email(
+            subject = '[WaykiLeaks] So you forgot your password',
             sender = app.config['SENDGRID_DEFAULT_FROM'],
             recipients = user.email,
             text_body = render_template('email/passreset.txt', user=user, token=token),
@@ -20,7 +21,8 @@ def send_password_reset_email(user):
     )
 
 def quote_approved_email(user, quote):
-    send_email('[WaykiLeaks] Your quote has been approved',
+    send_email(
+            subject = '[WaykiLeaks] Your quote has been approved',
             sender = app.config['SENDGRID_DEFAULT_FROM'],
             recipients = user.email,
             text_body = render_template('email/qapprove.txt', user=user, quote=quote),
@@ -28,7 +30,8 @@ def quote_approved_email(user, quote):
     )
 
 def quote_denied_email(user, quote):
-    send_email('[WaykiLeaks] Your quote has been denied',
+    send_email(
+            subject = '[WaykiLeaks] Your quote has been denied',
             sender = app.config['SENDGRID_DEFAULT_FROM'],
             recipients = user.email,
             text_body = render_template('email/qdeny.txt', user=user, quote=quote),
@@ -36,7 +39,8 @@ def quote_denied_email(user, quote):
     )
 
 def ban_email(user):
-    send_email('[WaykiLeaks] You have been banned',
+    send_email(
+            subject = '[WaykiLeaks] You have been banned',
             sender = app.config['SENDGRID_DEFAULT_FROM'],
             recipients = user.email,
             text_body = render_template('email/ban.txt', user=user),
@@ -44,7 +48,8 @@ def ban_email(user):
     )
 
 def unban_email(user):
-    send_email('[WaykiLeaks] You have been unbanned',
+    send_email(
+            subject = '[WaykiLeaks] You have been unbanned',
             sender = app.config['SENDGRID_DEFAULT_FROM'],
             recipients = user.email,
             text_body = render_template('email/unban.txt', user=user),
