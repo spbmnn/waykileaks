@@ -15,7 +15,8 @@
 {% endif %}
 
 {% if showstats %}<h2>Stats</h2>
-<p><b>Submitted Quotes:</b> {{ user.submissions|length }}</p>
+<p><b>Submitted Quotes:</b> {{ user.submissions|length }}<br>
+<b>Approved Quotes:</b> {{ user.get_approved_count() }}</p>
 {% endif %}
 
 {% if showquotes %}

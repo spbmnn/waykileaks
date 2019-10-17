@@ -35,6 +35,13 @@ class User(UserMixin, db.Model):
             karma += quote.score
         return karma
 
+    def get_approved_count(self):
+        count = 0
+        for quote in self.submissions:
+            if quote.published:
+                count += 1
+        return count
+
     def get_existence(self):
         return self.alive
 
