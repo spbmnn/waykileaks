@@ -8,6 +8,7 @@
 <br>
 {% if not current_user.is_anonymous %}
 {% if current_user.role > 2 %}
+    {{ user.email }}
     {% if user.get_existence() %}<a href="/ban/{{user.username}}/">defenestrate</a>
     {% else %}<a href="/unban/{{user.username}}/">refenestrate</a>{%endif%}
 <a href="/promote/{{user.username}}">promote</a> | <a href="/demote/{{user.username}}">demote</a>
