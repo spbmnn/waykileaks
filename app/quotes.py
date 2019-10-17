@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
 from app.forms import SubmitForm
@@ -27,8 +27,12 @@ def submit():
 @app.route('/vote/<id>/')
 @login_required
 def vote(id):
+    returnto = request.args.get('returnto', 1, )
     id = int(id)
     quote = Quote.query.filter_by(id=id).first()
     user = current_user
     quote.vote(user.id)
-    return redirect(url_for('quote_page', id=str(id)))
+    if not request.referrer:
+        return redirect(url_for('quote_page', id=str(id)))
+    else:
+        return redirect(request.referrer)

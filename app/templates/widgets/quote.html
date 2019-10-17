@@ -1,8 +1,13 @@
-<h2>Quote #{{ quote.id }}&nbsp;
+<section class="quotebox">
+<h2>Quote #<a href="{{ url_for('quote_page', id=quote.id|string) }}" class="topage">{{ quote.id }}</a>&nbsp;
 {% if not current_user.is_anonymous %}
-<a href="/vote/{{ quote.id }}/" class="votebutton">{% if quote.has_voted(current_user.id) %}▲{% else %}△{% endif %}</a>{% endif %} <sup>{{ quote.score }}</sup></h2>
+<a href="/vote/{{ quote.id }}/" class="votebutton {% if quote.has_voted(current_user.id) %}voted{% endif %}">▲</a>
+{% endif %}<span class="score">{{ quote.score }}</span></h2>
 <blockquote>{{ quote.body }}</blockquote>
 <p>&mdash; <a href="/speaker/{{ quote.speaker.id }}">{{ quote.speaker.name }}</a>, on {{ quote.topic }}, <b>{{ quote.created.strftime('%Y') }}</b></p>
+{% if quote.moderated and not quote.published %}
+<em>This quote was removed for the reason: {{ quote.deny_reason }}</em>
+{% endif %}
 <small class="attr">posted by <a href="/user/{{ quote.submitter.username }}/">{{ quote.submitter.username }}</a>
 {% if not current_user.is_anonymous %}
 {% if current_user.role > 2 %}
@@ -11,3 +16,4 @@
 {% endif %}
 {% endif %}
 </small>
+</section>

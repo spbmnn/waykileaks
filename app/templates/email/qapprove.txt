@@ -1,0 +1,13 @@
+WaykiLeaks
+Official Bulletin
+-----------------
+
+To: {{ user.username }}
+Re: Quote No. {{ quote.id|string }}
+
+Your quote, “On {{ quote.topic }}”, has been approved by the Holy Council.
+It is now live on WaykiLeaks.org.
+{{ url_for('quote_page', id=quote.id|string, _external=True) }}
+
+Sincerely,
+The Holy Council

@@ -1,6 +1,6 @@
 from flask import render_template, request, flash, redirect, url_for
 from flask_login import current_user, login_required
-from app import app, db
+from app import app, db, email
 from app.forms import DenyQuoteForm
 from app.models import User, Speaker, Quote
 
@@ -66,6 +66,7 @@ def ban(username):
         flash('user is already banned.')
         return redirect(url_for('index'))
     flash(username + ' is no more.')
+    email.ban_email(user=user)
     return redirect(url_for('index'))
 
 @app.route('/unban/<username>/')
@@ -82,6 +83,7 @@ def unban(username):
         db.session.add(user)
         db.session.commit()
     flash(username + ' is more.')
+    email.unban_email(user=user)
     return redirect(url_for('index'))
 
 ###                   ###
@@ -100,6 +102,7 @@ def approve_quote(id):
     db.session.add(quote)
     db.session.commit()
     flash('Quote #' + str(id) + ' has been approved.')
+    email.quote_approved_email(user=quote.submitter, quote=quote)
     return redirect(request.args.get('target', url_for('index'), type=str))
 
 @app.route('/deny/q/<id>/', methods=['GET', 'POST'])
@@ -114,11 +117,11 @@ def deny_quote(id):
         quote.deny_reason = form.reason.data
         quote.published = False
         quote.moderated = True
-        quote.score = 0 
+        quote.score = 0
         db.session.add(quote)
         db.session.commit()
         flash('Quote #' + str(id) + ' has been denied. Reason: ' + form.reason.data)
-        # Put submitter email notification here.
+        email.quote_denied_email(user=quote.submitter, quote=quote)
         return redirect(url_for('index'))
     return render_template('forms/denyquote.html', form=form)
 

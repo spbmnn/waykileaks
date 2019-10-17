@@ -1,0 +1,13 @@
+WaykiLeaks
+Official Bulletin
+-----------------
+
+To: {{ user.username }}
+Attn: Refenestration
+
+Attention {{ user.username }},
+The Holy Council has decided to reverse your ban. You are now able to log in to the site, to your discretion.
+You're welcome.
+
+Laters,
+The Holy Council

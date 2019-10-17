@@ -1,4 +1,4 @@
-<h2>{{ user.username }}
+<h2><a href="{{ url_for('user_profile', username=user.username ) }}" class="topage">{{ user.username }}</a>
     {% if user.role > 1 %}
     <sup>{% if user.role == 3 %}⁑
         {% elif user.role == 4 %}⁂
@@ -10,13 +10,12 @@
 {% if current_user.role > 2 %}
     {% if user.get_existence() %}<a href="/ban/{{user.username}}/">defenestrate</a>
     {% else %}<a href="/unban/{{user.username}}/">refenestrate</a>{%endif%}
-{% elif current_user.role > 3 %}
 <a href="/promote/{{user.username}}">promote</a> | <a href="/demote/{{user.username}}">demote</a>
 {% endif %}
 {% endif %}
 
 {% if showstats %}<h2>Stats</h2>
-<p><b>Submitted Quotes:</b> {{ submitcount }}</p>
+<p><b>Submitted Quotes:</b> {{ user.submissions|length }}</p>
 {% endif %}
 
 {% if showquotes %}

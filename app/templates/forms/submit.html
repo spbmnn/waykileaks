@@ -4,7 +4,7 @@
 <form method="post">
   {{ form.hidden_tag() }}
   <p>
-    {{ form.body(cols=64, rows=16) }}<br>
+    &ldquo; {{ form.body(size=64) }} &rdquo;<br>
   </p>
   <p>&mdash; {{ form.speaker(size=32) }}, on {{ form.topic(size=32) }}</p>
   <p>{{ form.submit() }}

@@ -9,6 +9,7 @@ from flask import render_template, flash, redirect, url_for
 from flask_login import current_user, login_required
 from app import app, db
 from app.models import User, Quote, Speaker
+from sqlalchemy import desc
 
 @app.route('/users/')
 @login_required
@@ -21,11 +22,11 @@ def user_profile(username):
     user = User.query.filter_by(username=username).first_or_404()
     submitcount = str(len(user.submissions))
     return render_template('profiles/user.html', user=user, showstats=True,
-        submitcount=submitcount, showquotes=True)
+        showquotes=True)
 
 @app.route('/quotes/')
 def quote_list():
-    quotes = Quote.query.filter_by(published=True).order_by(Quote.score)
+    quotes = Quote.query.filter_by(published=True).order_by(desc(Quote.score))
     #quotect = len(quotes)
     return render_template('profiles/qdir.html', quotes=quotes)#, quotect=quotect)
 

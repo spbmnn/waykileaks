@@ -16,14 +16,14 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if not user.get_existence():
-            flash('Sorry, your account has been banned for some reason or another.\n \
-            For more info, please send us an email.')
-            return redirect(url_for('index'))
         if user is None or not user.check_password(form.password.data):
             flash('invalid username or password')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember.data)
+        if not current_user.get_existence():
+            flash('Sorry, your account has been banned for some reason or another.\n \
+            For more info, please send us an email.')
+            logout_user()
         return redirect(url_for('index'))
     return render_template('forms/login.html', title='Log In', form=form)
 

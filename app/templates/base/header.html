@@ -1,0 +1,18 @@
+<header>
+  <div>
+    <a href="{{ url_for('index') }}" id="site-title">WaykiLeaks.org</a>
+    <p id="tagline">Quotation Without Representation</p>
+  </div>
+  <div><a href="{{ url_for('quote_list') }}">quotes</a></div>
+  {% if current_user.is_anonymous %}
+  <div></div>
+  <div><a href="{{ url_for('login') }}">log in</a></div>
+  {% else %}
+  <div><a href="{{ url_for('submit') }}">submit a quote</a></div>
+  <div>
+    <span>{{ current_user.username }}<br>
+    <a href="{{ url_for('logout') }}">log out</a></span>
+  </div>
+  {% endif %}
+</header>
+<p style="color: red; font-weight: bold;">WARNING: This is an alpha. Expect sudden changes, broken thing thangs, and stuff removal.</p>

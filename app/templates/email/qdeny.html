@@ -1,0 +1,14 @@
+<h1>WaykiLeaks</h1>
+<h2>Official Bulletin</h2>
+<hr>
+
+<p><b>To:</b> {{ user.username }}<br>
+<b>Re:</b> Quote No. {{ quote.id|string }}</p>
+
+<p>Your quote, “On {{ quote.topic }}”, has been reviewed by the Holy Council.<br>
+We have deemed it unworthy for the following reason:<br>
+{{ quote.deny_reason }}<br>
+Please increase your submission quality in the future.</p>
+<br>
+<blockquote>Sincerely,
+The Holy Council</blockquote>

@@ -1,0 +1,14 @@
+WaykiLeaks
+Official Bulletin
+-----------------
+
+To: {{ user.username }}
+Re: Quote No. {{ quote.id|string }}
+
+Your quote, “On {{ quote.topic }}”, has been reviewed by the Holy Council.
+We have deemed it unworthy for the following reason:
+{{ quote.deny_reason }}
+Please increase your submission quality in the future.
+
+Sincerely,
+The Holy Council

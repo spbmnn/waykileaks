@@ -1,0 +1,15 @@
+<h1>WaykiLeaks</h1>
+<h2>Official Bulletin</h2>
+<hr>
+
+<p><b>To:</b> {{ user.username }}<br>
+<b>Re:</b> Quote No. {{ quote.id|string }}</p>
+
+<p>Your quote, “On {{ quote.topic }}”, has been approved by the Holy Council.<br>
+It is now live on WaykiLeaks.org.<br>
+<a href="{{ url_for('quote_page', id=quote.id|string, _external=True) }}">
+    {{ url_for('quote_page', id=quote.id|string, _external=True) }}
+</a></p>
+<br>
+<blockquote>Sincerely,
+The Holy Council</blockquote>

@@ -1,0 +1,13 @@
+WaykiLeaks
+Official Bulletin
+-----------------
+
+To: {{ user.username }}
+Attn: Defenestration
+
+Attention {{ user.username }},
+The Holy Council has decided to defenestrate you. You will be unable to log in to the site, effective immediately.
+For more information, email us at waykileaks@stripywalrus.xyz [DO NOT RESPOND TO THIS ADDRESS] and we will be able to elaborate.
+
+Laters,
+The Holy Council
