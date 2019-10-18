@@ -22,18 +22,31 @@ def submit():
         db.session.add(quote)
         db.session.commit()
         flash('Thanks for your quote on '+quote.topic+'!')
-        quote.vote(current_user.id)
+        quote.upvote(current_user.id)
         return redirect(url_for('index'))
     return render_template('forms/submit.html', form=form)
 
-@app.route('/vote/<id>/')
+@app.route('/upvote/<id>/')
 @login_required
-def vote(id):
+def upvote(id):
     returnto = request.args.get('returnto', 1, )
     id = int(id)
     quote = Quote.query.filter_by(id=id).first()
     user = current_user
-    quote.vote(user.id)
+    quote.upvote(user.id)
+    if not request.referrer:
+        return redirect(url_for('quote_page', id=str(id)))
+    else:
+        return redirect(request.referrer)
+
+@app.route('/downvote/<id>/')
+@login_required
+def downvote(id):
+    returnto = request.args.get('returnto', 1, )
+    id = int(id)
+    quote = Quote.query.filter_by(id=id).first()
+    user = current_user
+    quote.downvote(user.id)
     if not request.referrer:
         return redirect(url_for('quote_page', id=str(id)))
     else:

@@ -99,13 +99,7 @@ class Quote(db.Model):
     def __repr__(self):
         return '<Quote on {}>'.format(self.topic)
 
-    def get_voter_ids(self):
-        select = quote_upvotes.select(quote_upvotes.c.quote_id == self.id)
-        rs = db.engine.execute(select)
-        ids = rs.fetchall()
-        return ids
-
-    def has_voted(self, user_id):
+    def has_upvoted(self, user_id):
         select_votes = quote_upvotes.select(
             db.and_(
                 quote_upvotes.c.user_id == user_id,
@@ -118,10 +112,25 @@ class Quote(db.Model):
         else:
             return True
 
-    def vote(self, user_id): # big props to codelucas for this flask-reddit thing thang. i am not skilled enough to do this alone.
-        already_voted = self.has_voted(user_id)
+    def has_downvoted(self, user_id):
+        select_votes = quote_upvotes.select(
+            db.and_(
+                quote_downvotes.c.user_id == user_id,
+                quote_downvotes.c.quote_id == self.id
+            )
+        )
+        rs = db.engine.execute(select_votes).first()
+        if rs is None:
+            return False
+        else:
+            return True
+
+    def upvote(self, user_id): # props to codelucas/flask-reddit
+        already_voted = self.has_upvoted(user_id)
         vote_status = None
         if not already_voted:
+            if self.has_downvoted(user_id):
+                self.downvote(user_id)
             db.engine.execute(
                     quote_upvotes.insert(),
                     user_id = user_id,
@@ -143,7 +152,39 @@ class Quote(db.Model):
         db.session.commit()
         return vote_status
 
+    def downvote(self, user_id):
+        already_voted = self.has_downvoted(user_id)
+        vote_status = None
+        if not already_voted:
+            if self.has_upvoted(user_id):
+                self.upvote(user_id)
+            db.engine.execute(
+                    quote_downvotes.insert(),
+                    user_id = user_id,
+                    quote_id = self.id
+            )
+            self.score -= 1
+            vote_status = True
+        else:
+            db.engine.execute(
+                    quote_downvotes.delete(
+                        db.and_(
+                            quote_downvotes.c.user_id == user_id,
+                            quote_downvotes.c.quote_id == self.id
+                        )
+                    )
+            )
+            self.score += 1
+            vote_status = False
+        db.session.commit()
+        return vote_status
+
 quote_upvotes = db.Table('quote_upvotes',
+        db.Column('user_id', db.Integer, db.ForeignKey(User.id)),
+        db.Column('quote_id', db.Integer, db.ForeignKey(Quote.id))
+)
+
+quote_downvotes = db.Table('quote_downvotes',
         db.Column('user_id', db.Integer, db.ForeignKey(User.id)),
         db.Column('quote_id', db.Integer, db.ForeignKey(Quote.id))
 )

@@ -1,11 +1,18 @@
 <section class="box">
 <h2>Quote #<a href="{{ url_for('quote_page', id=quote.id|string) }}" class="topage">{{ quote.id }}</a>&nbsp;
 {% if not current_user.is_anonymous %}
-<a href="/vote/{{ quote.id }}/" class="votebutton"><img
-    {% if quote.has_voted(current_user.id) %}src="{{ url_for('static', filename='img/ub-a.png') }}"
+<a href="/upvote/{{ quote.id }}/" class="votebutton"><img
+    {% if quote.has_upvoted(current_user.id) %}src="{{ url_for('static', filename='img/ub-a.png') }}"
     {% else %}src="{{ url_for('static', filename='img/ub-u.png') }}"{% endif %}
     alt="upbrian"/></a>
-{% endif %}<span class="score">{{ quote.score }}</span></h2>
+{% endif %}<span class="score">{{ quote.score }}</span>
+{% if not current_user.is_anonymous %}
+<a href="/downvote/{{ quote.id }}/" class="votebutton"><img
+    {% if quote.has_downvoted(current_user.id) %}src="{{ url_for('static', filename='img/db-a.png') }}"
+    {% else %}src="{{ url_for('static', filename='img/db-u.png') }}"{% endif %}
+    alt="upbrian"/></a>
+{% endif %}
+</h2>
 <blockquote>{{ quote.body }}</blockquote>
 <p>&mdash; <a href="/speaker/{{ quote.speaker.id }}">{{ quote.speaker.name }}</a>, on {{ quote.topic }}, <b>{{ quote.created.strftime('%Y') }}</b></p>
 {% if showstatus %}{% if not current_user.is_anonymous %}{% if quote.submitter == current_user %}
