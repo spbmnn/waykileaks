@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, \
     IntegerField
-from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, \
+    Regexp
 from app.models import User, Quote
 
 class LoginForm(FlaskForm):
@@ -11,7 +12,8 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Get Online!')
 
 class SignupForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired(), Regexp(
+        '^[a-zA-Z0-9_]+$', message="Letters, numbers, and underscores only please.")])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField('Verify Password', validators=[DataRequired(), EqualTo('password')])
