@@ -51,6 +51,6 @@ def speaker_summary(id):
 @app.route('/myquotes/')
 @login_required
 def my_quotes():
-    quotes = Quote.query.filter_by(submitter=current_user)
+    quotes = Quote.query.filter_by(submitter=current_user).order_by(desc(Quote.id))
     return render_template('profiles/qdir.html', title="My Quotes", quotes=quotes, showstatus=True)
 
