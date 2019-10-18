@@ -1,7 +1,10 @@
 <section class="box">
 <h2>Quote #<a href="{{ url_for('quote_page', id=quote.id|string) }}" class="topage">{{ quote.id }}</a>&nbsp;
 {% if not current_user.is_anonymous %}
-<a href="/vote/{{ quote.id }}/" class="votebutton {% if quote.has_voted(current_user.id) %}voted{% endif %}">▲</a>
+<a href="/vote/{{ quote.id }}/" class="votebutton"><img
+    {% if quote.has_voted(current_user.id) %}src="{{ url_for('static', filename='img/ub-a.png') }}"
+    {% else %}src="{{ url_for('static', filename='img/ub-u.png') }}"{% endif %}
+    alt="upbrian"/></a>
 {% endif %}<span class="score">{{ quote.score }}</span></h2>
 <blockquote>{{ quote.body }}</blockquote>
 <p>&mdash; <a href="/speaker/{{ quote.speaker.id }}">{{ quote.speaker.name }}</a>, on {{ quote.topic }}, <b>{{ quote.created.strftime('%Y') }}</b></p>

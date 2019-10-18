@@ -10,16 +10,11 @@ html {
 }
 
 .votebutton {
-    color: #000;
     text-decoration: none;
 }
 
 .score {
     font-family: monospace;
-}
-
-.voted {
-    color: #f00;
 }
 
 /* HEADER BITS */
