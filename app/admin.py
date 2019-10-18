@@ -21,7 +21,7 @@ def admin_home():
 @app.route('/promote/<username>/')
 @login_required
 def promote(username):
-    if current_user.role < 4:
+    if current_user.role < 3:
         return render_template('forbidden.html'), 403
     user = User.query.filter_by(username=username).first_or_404()
     if user.username == current_user.username:
@@ -40,7 +40,7 @@ def promote(username):
 @app.route('/demote/<username>/')
 @login_required
 def demote(username):
-    if current_user.role < 4:
+    if current_user.role < 3:
         return render_template('forbidden.html'), 403
     user = User.query.filter_by(username=username).first_or_404()
     if user.role == 1:
