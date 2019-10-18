@@ -154,6 +154,7 @@ def delete_quote(id):
         return 403
     quote = Quote.query.filter_by(id=id).first_or_404()
     db.session.delete(quote)
+    db.session.commit()
     flash('Deleted quote #' + str(id))
     if not request.referrer:
         return redirect(url_for('index'))
