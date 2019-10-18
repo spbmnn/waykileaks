@@ -39,4 +39,18 @@ def quote_page(id):
 def speaker_summary(id):
     id=int(id)
     speaker = Speaker.query.filter_by(id=id).first_or_404()
-    return render_template('profiles/speaker.html', speaker=speaker)
+    quotes = []
+    if not current_user.is_anonymous and current_user.role > 2:
+        quotes = speaker.quotes
+    else:
+        for quote in speaker.quotes:
+            if quote.published:
+                quotes.append(quote)
+    return render_template('profiles/speaker.html', speaker=speaker, quotes=quotes)
+
+@app.route('/myquotes/')
+@login_required
+def my_quotes():
+    quotes = Quote.query.filter_by(submitter=current_user)
+    return render_template('profiles/qdir.html', title="My Quotes", quotes=quotes, showstatus=True)
+

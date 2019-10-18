@@ -50,7 +50,7 @@ def demote(username):
         flash('YOU SHALL NOT DEMOTE ME FEEBLE BEING')
         return redirect(url_for('index'))
     elif user.username == current_user.username:
-        flash('you cannot promote yourself!!!!')
+        flash('you should not demote yourself!!!!')
         return redirect(url_for('index'))
     user.role -= 1
     db.session.add(user)
@@ -145,6 +145,20 @@ def deny_quote(id):
         else:
             return redirect(request.referrer)
     return render_template('forms/denyquote.html', form=form)
+
+@app.route('/delete/q/<id>/')
+@login_required
+def delete_quote(id):
+    id = int(id)
+    if current_user.role < 4:
+        return 403
+    quote = Quote.query.filter_by(id=id).first_or_404()
+    db.session.delete(quote)
+    flash('Deleted quote #' + str(id))
+    if not request.referrer:
+        return redirect(url_for('index'))
+    else:
+        return redirect(request.referrer)
 
 @app.route('/merge/<id1>/into/<id2>/') #merge
 @login_required
