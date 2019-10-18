@@ -113,7 +113,7 @@ def approve_quote(id):
     flash('Quote #' + str(id) + ' has been approved.')
     email.quote_approved_email(user=quote.submitter, quote=quote)
     if not request.referrer:
-        return redirect(url_for('index')
+        return redirect(url_for('index'))
     else:
         return redirect(request.referrer)
 
