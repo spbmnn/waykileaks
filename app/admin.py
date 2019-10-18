@@ -135,7 +135,7 @@ def deny_quote(id):
         flash('Quote #' + str(id) + ' has been denied. Reason: ' + form.reason.data)
         email.quote_denied_email(user=quote.submitter, quote=quote)
         if not request.referrer:
-            return redirect(url_for('index')
+            return redirect(url_for('index'))
         else:
             return redirect(request.referrer)
     return render_template('forms/denyquote.html', form=form)
