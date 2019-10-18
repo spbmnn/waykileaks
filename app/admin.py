@@ -24,7 +24,10 @@ def promote(username):
     if current_user.role < 4:
         return render_template('forbidden.html'), 403
     user = User.query.filter_by(username=username).first_or_404()
-    if user.role < 3:
+    if user.username == current_user.username:
+        flash('you cannot promote yourself!!!!')
+        return redirect(url_for('index'))
+    elif user.role < 3:
         user.role += 1
     else:
         flash('cannot promote past vassal level')
@@ -42,6 +45,12 @@ def demote(username):
     user = User.query.filter_by(username=username).first_or_404()
     if user.role == 1:
         flash('cannot demote below serf level. yes, even freshmen.')
+        return redirect(url_for('index'))
+    elif user.role == 4:
+        flash('YOU SHALL NOT DEMOTE ME FEEBLE BEING')
+        return redirect(url_for('index'))
+    elif user.username == current_user.username:
+        flash('you cannot promote yourself!!!!')
         return redirect(url_for('index'))
     user.role -= 1
     db.session.add(user)
@@ -103,7 +112,10 @@ def approve_quote(id):
     db.session.commit()
     flash('Quote #' + str(id) + ' has been approved.')
     email.quote_approved_email(user=quote.submitter, quote=quote)
-    return redirect(request.args.get('target', url_for('index'), type=str))
+    if not request.referrer:
+        return redirect(url_for('index')
+    else:
+        return redirect(request.referrer)
 
 @app.route('/deny/q/<id>/', methods=['GET', 'POST'])
 @login_required
@@ -122,7 +134,10 @@ def deny_quote(id):
         db.session.commit()
         flash('Quote #' + str(id) + ' has been denied. Reason: ' + form.reason.data)
         email.quote_denied_email(user=quote.submitter, quote=quote)
-        return redirect(url_for('index'))
+        if not request.referrer:
+            return redirect(url_for('index')
+        else:
+            return redirect(request.referrer)
     return render_template('forms/denyquote.html', form=form)
 
 @app.route('/merge/<id1>/into/<id2>/') #merge
