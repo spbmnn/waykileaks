@@ -19,6 +19,7 @@
 <h4>Speakers</h4>
 {% for speaker in speakers %}
 <a href="/speaker/{{ speaker.id }}">{% if speaker.quotes|length == 0 %}
-    <i>{{ speaker.name }}</i>{% else %}{{ speaker.name }}{% endif %}</a>
+    <i>{{ speaker.name }}</i>{% else %}{{ speaker.name }}{% endif %}</a>&nbsp;
 {% endfor %}
+<a href="{{ url_for('purge_speakers') }}">purge the weak and empty</a>
 {% endblock content %}

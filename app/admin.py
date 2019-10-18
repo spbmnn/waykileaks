@@ -158,3 +158,18 @@ def merge_speakers(id1, id2):
     db.session.commit()
     flash('Merged ' + speaker1.name + ' quotes into ' + speaker2.name)
     return redirect(url_for('index'))
+
+@app.route('/purge/')
+@login_required
+def purge_speakers():
+    if current_user.role < 3:
+        return render_template('forbidden.html'), 403
+    speakers = Speaker.query
+    empty_speakers = []
+    for speaker in speakers:
+        if len(speaker.quotes) == 0:
+            flash('Deleted empty speaker ' + speaker.name)
+            db.session.delete(speaker)
+    db.session.commit()
+    return redirect(url_for('index'))
+
