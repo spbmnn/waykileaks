@@ -111,7 +111,10 @@ def approve_quote(id):
     db.session.add(quote)
     db.session.commit()
     flash('Quote #' + str(id) + ' has been approved.')
-    email.quote_approved_email(user=quote.submitter, quote=quote)
+    try:
+        email.quote_approved_email(user=quote.submitter, quote=quote)
+    except:
+        pass
     if not request.referrer:
         return redirect(url_for('index'))
     else:
@@ -133,7 +136,10 @@ def deny_quote(id):
         db.session.add(quote)
         db.session.commit()
         flash('Quote #' + str(id) + ' has been denied. Reason: ' + form.reason.data)
-        email.quote_denied_email(user=quote.submitter, quote=quote)
+        try:
+            email.quote_denied_email(user=quote.submitter, quote=quote)
+        except:
+            pass
         if not request.referrer:
             return redirect(url_for('index'))
         else:
