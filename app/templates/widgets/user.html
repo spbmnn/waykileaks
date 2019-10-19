@@ -12,11 +12,12 @@
     {% if user.get_existence() %}<a href="/ban/{{user.username}}/">defenestrate</a>
     {% else %}<a href="/unban/{{user.username}}/">refenestrate</a>{%endif%}
 <a href="/promote/{{user.username}}">promote</a> | <a href="/demote/{{user.username}}">demote</a>
+<p><b>Approved %:</b> {{ user.get_approved_percentage(True) }}</p>
 {% endif %}
 {% endif %}
 
 {% if showstats %}<h2>Stats</h2>
-<p><b>Submitted Quotes:</b> {{ user.submissions|length }}<br>
+<p><b>Submitted Quotes:</b> {{ user.get_submitted_count() }}<br>
 <b>Approved Quotes:</b> {{ user.get_approved_count() }}</p>
 {% endif %}
 

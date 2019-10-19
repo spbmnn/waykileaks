@@ -35,12 +35,24 @@ class User(UserMixin, db.Model):
             karma += quote.score
         return karma
 
+    def get_submitted_count(self):
+        return len(self.submissions)
+
     def get_approved_count(self):
         count = 0
         for quote in self.submissions:
             if quote.published:
                 count += 1
         return count
+
+    def get_approved_percentage(self, format_100=False):
+        try:
+            pct = self.get_approved_count() / self.get_submitted_count()
+        except ZeroDivisionError:
+            pct = 0.0
+        if format_100:
+            pct = int(pct * 100)
+        return pct
 
     def get_existence(self):
         return self.alive
