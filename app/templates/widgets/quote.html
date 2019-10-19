@@ -14,7 +14,8 @@
 {% endif %}
 </h2>
 <blockquote>{{ quote.body }}</blockquote>
-<p>&mdash; <a href="/speaker/{{ quote.speaker.id }}">{{ quote.speaker.name }}</a>, on {{ quote.topic }}, <b>{{ quote.created.strftime('%Y') }}</b></p>
+<p>&mdash; <a href="/speaker/{{ quote.speaker.id }}">{{ quote.speaker.name }}</a>, on {{ quote.topic }}, <b>{{ quote.created.strftime('%Y') }}</b>
+{% if not current_user.is_anonymous and user.role > 2 %}{{ quote.get_hotness() }}{% endif %}</p>
 {% if showstatus %}{% if not current_user.is_anonymous %}{% if quote.submitter == current_user %}
 <p><b>Quote status:</b>&nbsp;
 {% if not quote.moderated %}In moderation queue{% elif not quote.published %}Denied{% else %}Approved{% endif %}
