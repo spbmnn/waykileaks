@@ -118,7 +118,7 @@ class Quote(db.Model):
         k = self.score
         o = log(max(abs(td), 1), 10)
         s = 1 if k > 0 else -1 if k < 0 else 0
-        return round(o+((s*td)/45000), 7)
+        return round(s*o+((td)/45000), 7)
 
     def has_upvoted(self, user_id):
         select_votes = quote_upvotes.select(
