@@ -5,7 +5,7 @@ Handles individual/communal user, speaker, and quote pages.
 '''
 # TODO: Give /profiles/ a base.html
 # TODO: Consolidate /profiles/user.html, speaker.html, & quote.html
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_required
 from app import app, db
 from app.models import User, Quote, Speaker
@@ -26,7 +26,15 @@ def user_profile(username):
 
 @app.route('/quotes/')
 def quote_list():
-    quotes = Quote.query.filter_by(published=True).order_by(desc(Quote.score))
+    quoteresult = Quote.query.filter_by(published=True)
+    quotes = []
+    for quote in quoteresult:
+        quotes.append(quote) # ew
+    hotornot = request.args.get('sort', 'hot', type=str)
+    if hotornot == 'top':
+        quotes.sort(key=lambda x: x.score, reverse=True)
+    else: # i guess we have to get hotness dynamically
+        quotes.sort(key=lambda x: x.get_hotness(), reverse=True)
     #quotect = len(quotes)
     return render_template('profiles/qdir.html', quotes=quotes)#, quotect=quotect)
 
@@ -53,4 +61,3 @@ def speaker_summary(id):
 def my_quotes():
     quotes = Quote.query.filter_by(submitter=current_user).order_by(desc(Quote.id))
     return render_template('profiles/qdir.html', title="My Quotes", quotes=quotes, showstatus=True)
-

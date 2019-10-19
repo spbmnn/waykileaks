@@ -4,6 +4,7 @@ from datetime import datetime
 from app import app, login, db
 import jwt
 from time import time
+from math import log
 
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
@@ -110,6 +111,14 @@ class Quote(db.Model):
 
     def __repr__(self):
         return '<Quote on {}>'.format(self.topic)
+
+    def get_hotness(self):
+        td = datetime.now() - self.created
+        td = td.total_seconds()
+        k = self.score
+        o = log(max(abs(td), 1), 10)
+        s = 1 if k > 0 else -1 if k < 0 else 0
+        return round(o+((s*td)/45000), 7)
 
     def has_upvoted(self, user_id):
         select_votes = quote_upvotes.select(
