@@ -132,7 +132,6 @@ def deny_quote(id):
         quote.deny_reason = form.reason.data
         quote.published = False
         quote.moderated = True
-        quote.score = 0
         db.session.add(quote)
         db.session.commit()
         flash('Quote #' + str(id) + ' has been denied. Reason: ' + form.reason.data)
@@ -140,6 +139,11 @@ def deny_quote(id):
             email.quote_denied_email(user=quote.submitter, quote=quote)
         except:
             pass
+        # Remove auto-upvote
+        uid = quote.submitter.id
+        quote.downvote(uid) # Flip from up to down, if necessary
+        quote.upvote(uid) # Flip from down to up
+        quote.upvote(uid) # Flip from up to neutral
         if not request.referrer:
             return redirect(url_for('index'))
         else:
