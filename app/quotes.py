@@ -63,3 +63,22 @@ def downvote(id):
         return redirect(url_for('quote_page', id=str(id)))
     else:
         return redirect(request.referrer)
+
+@app.route('/purge/v/')
+@login_required
+def purge_votes():
+    if current_user.role < 3:
+        return render_template('forbidden.html'), 403
+    quotes = Quote.query
+    for quote in quotes:
+        new_score = 0
+        new_score += len(quote.get_voter_ids(up=True))
+        new_score -= len(quote.get_voter_ids(up=False))
+        quote.score = new_score
+        db.session.add(quote)
+    db.session.commit()
+    flash('Scores have been adjusted.')
+    if not request.referrer:
+        return redirect(url_for('index'))
+    else:
+        return redirect(request.referrer)

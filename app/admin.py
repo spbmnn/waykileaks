@@ -180,7 +180,7 @@ def merge_speakers(id1, id2):
     flash('Merged ' + speaker1.name + ' quotes into ' + speaker2.name)
     return redirect(url_for('index'))
 
-@app.route('/purge/')
+@app.route('/purge/s/')
 @login_required
 def purge_speakers():
     if current_user.role < 3:
@@ -193,4 +193,3 @@ def purge_speakers():
             db.session.delete(speaker)
     db.session.commit()
     return redirect(url_for('index'))
-

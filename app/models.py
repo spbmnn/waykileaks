@@ -116,7 +116,7 @@ class Speaker(db.Model):
 class Quote(db.Model):
     __tablename__ = 'quote'
     id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(1024), unique=True)
+    body = db.Column(db.String(1024))
     topic = db.Column(db.String(256))
     created = db.Column(db.DateTime, default=datetime.utcnow)
     submitter = db.relationship(User, backref='submissions')
@@ -144,6 +144,20 @@ class Quote(db.Model):
         o = log(max(abs(td), 1), 5)
         s = 1 if k > 0 else -1 if k < 0 else 0
         return round(s*o+(td/45000), 7)
+
+    def get_voter_ids(self, up=True):
+        select = None
+        if up:
+            select = quote_upvotes.select(
+                quote_upvotes.c.quote_id == self.id
+            )
+        else:
+            select = quote_downvotes.select(
+                quote_downvotes.c.quote_id == self.id
+            )
+        rs = db.engine.execute(select)
+        ids = rs.fetchall()
+        return ids
 
     def has_upvoted(self, user_id):
         select_votes = quote_upvotes.select(
