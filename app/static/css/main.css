@@ -11,6 +11,28 @@ html {
 
 .votebutton {
     text-decoration: none;
+    margin: 0;
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    background-color: white;
+    background-blend-mode: multiply;
+}
+
+.up {
+    background-image: url('/static/img/u.png');
+}
+
+.down {
+    background-image: url('/static/img/d.png');
+}
+
+.up-a {
+    background-color: red;
+}
+
+.down-a {
+    background-color: blue;
 }
 
 .score {

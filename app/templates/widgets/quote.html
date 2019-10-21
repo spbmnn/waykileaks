@@ -1,16 +1,10 @@
 <section class="box">
 <h2>Quote #<a href="{{ url_for('quote_page', id=quote.id|string) }}" class="topage">{{ quote.id }}</a>&nbsp;
 {% if not current_user.is_anonymous and quote.published %}
-<a href="/upvote/{{ quote.id }}/" class="votebutton"><img
-    {% if quote.has_upvoted(current_user.id) %}src="{{ url_for('static', filename='img/ub-a.png') }}"
-    {% else %}src="{{ url_for('static', filename='img/ub-u.png') }}"{% endif %}
-    alt="upbrian"/></a>
+<a href="/upvote/{{ quote.id }}/" class="votebutton up {% if quote.has_upvoted(current_user.id) %}up-a{% endif %}"></a>
 {% endif %}<span class="score">{{ quote.score }}</span>
 {% if not current_user.is_anonymous and quote.published %}
-<a href="/downvote/{{ quote.id }}/" class="votebutton"><img
-    {% if quote.has_downvoted(current_user.id) %}src="{{ url_for('static', filename='img/db-a.png') }}"
-    {% else %}src="{{ url_for('static', filename='img/db-u.png') }}"{% endif %}
-    alt="upbrian"/></a>
+<a href="/downvote/{{ quote.id }}/" class="votebutton down {% if quote.has_downvoted(current_user.id) %}down-a{% endif %}"></a>
 {% endif %}
 </h2>
 <blockquote>{{ quote.body }}</blockquote>
