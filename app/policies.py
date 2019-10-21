@@ -8,3 +8,7 @@ def privacy_policy():
 @app.route('/family-fun/')
 def family_fun():
     return render_template('policies/familyfun.html')
+
+@app.route('/credits/')
+def credits():
+    return render_template('credits.html')
