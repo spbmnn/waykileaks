@@ -6,7 +6,7 @@
     {% else %}src="{{ url_for('static', filename='img/ub-u.png') }}"{% endif %}
     alt="upbrian"/></a>
 {% endif %}<span class="score">{{ quote.score }}</span>
-{% if not current_user.is_anonymous %}
+{% if not current_user.is_anonymous and quote.published %}
 <a href="/downvote/{{ quote.id }}/" class="votebutton"><img
     {% if quote.has_downvoted(current_user.id) %}src="{{ url_for('static', filename='img/db-a.png') }}"
     {% else %}src="{{ url_for('static', filename='img/db-u.png') }}"{% endif %}
