@@ -5,27 +5,22 @@ import random
 
 BG_IMAGES = (
     {
-        'url': '/static/img/bg/0.jpg',
+        'url': 'https://upload.wikimedia.org/wikipedia/commons/8/8d/Freudenberg_sg_Switzerland.jpg',
         'attr': 'Christoph Michels',
         'license': 'CC BY 2.5'
     },
-    #{
-    #    'url': '/static/img/bg/1.jpg',
-    #    'attr': 'Balkhovitin',
-    #    'license': 'CC BY-SA 3.0'
-    #},
     {
-        'url': '/static/img/bg/2.jpg',
+        'url': 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Paysage_karabagh_02.jpg',
         'attr': 'Bouarf',
         'license': 'CC BY-SA 3.0'
     },
     {
-        'url': '/static/img/bg/3.jpg',
+        'url': 'https://upload.wikimedia.org/wikipedia/commons/6/69/K%C3%B6cherbaumwald-01.jpg',
         'attr': 'Hans Stieglitz',
         'license': 'CC BY-SA 3.0'
     },
     {
-        'url': '/static/img/bg/4.jpg',
+        'url': 'https://upload.wikimedia.org/wikipedia/commons/7/73/Bali_Khila_Rajgad_Maharashtra.jpg',
         'attr': 'Cj.samson',
         'license': 'CC BY 3.0'
     },
