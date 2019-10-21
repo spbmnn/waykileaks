@@ -19,6 +19,7 @@ def submit():
                 body=form.body.data, topic=form.topic.data)
         if current_user.role > 1:
             quote.published = True
+            quote.moderated = True
         db.session.add(quote)
         db.session.commit()
         flash('Thanks for your quote on '+quote.topic+'!')
