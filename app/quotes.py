@@ -36,7 +36,7 @@ def submit():
             db.session.commit()
         quote.upvote(current_user.id)
         return redirect(url_for('index'))
-    return render_template('forms/submit.html', form=form)
+    return render_template('forms/submit.html', form=form, title="Submit a Quote")
 
 @app.route('/upvote/<id>/')
 @login_required

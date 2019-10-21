@@ -8,9 +8,9 @@
   <div></div>
   <div><a href="{{ url_for('login') }}">log in</a></div>
   {% else %}
-  <div><a href="{{ url_for('submit') }}">submit a quote</a><br><a href="{{ url_for('my_quotes') }}">your quotes</a></div>
+  <div><a href="{{ url_for('submit') }}">submit a quote</a><br><a href="{{ url_for('my_quotes') }}">my quotes</a></div>
   <div>
-    <span>{{ current_user.username }}<br>
+    <span><a href="{{ url_for('user_profile', username=current_user.username) }}">{{ current_user.username }}</a><br>
     <a href="{{ url_for('logout') }}">log out</a></span>
   </div>
   {% endif %}

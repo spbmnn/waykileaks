@@ -15,14 +15,14 @@ from sqlalchemy import desc
 @login_required
 def user_directory():
     users = User.query.order_by(User.id)
-    return render_template('profiles/udir.html', users=users)
+    return render_template('profiles/udir.html', users=users, title="Users")
 
 @app.route('/user/<username>/')
 def user_profile(username):
     user = User.query.filter_by(username=username).first_or_404()
     submitcount = str(len(user.submissions))
     return render_template('profiles/user.html', user=user, showstats=True,
-        showquotes=True)
+        showquotes=True, title=user.username)
 
 @app.route('/quotes/')
 def quote_list():
@@ -36,12 +36,14 @@ def quote_list():
     else: # i guess we have to get hotness dynamically
         quotes.sort(key=lambda x: x.get_hotness(), reverse=True)
     #quotect = len(quotes)
-    return render_template('profiles/qdir.html', quotes=quotes)#, quotect=quotect)
+    return render_template('profiles/qdir.html', quotes=quotes,
+        title='Quotes')
 
 @app.route('/quote/<id>/')
 def quote_page(id):
     quote = Quote.query.filter_by(id=int(id)).first_or_404()
-    return render_template('profiles/quote.html', quote=quote)
+    return render_template('profiles/quote.html', quote=quote,
+        title='On {}'.format(quote.topic))
 
 @app.route('/speaker/<id>/')
 def speaker_summary(id):
@@ -54,7 +56,8 @@ def speaker_summary(id):
         for quote in speaker.quotes:
             if quote.published:
                 quotes.append(quote)
-    return render_template('profiles/speaker.html', speaker=speaker, quotes=quotes)
+    return render_template('profiles/speaker.html', speaker=speaker, quotes=quotes,
+        title=speaker.name)
 
 @app.route('/myquotes/')
 @login_required

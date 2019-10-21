@@ -57,7 +57,7 @@ def reset_password_request():
             send_password_reset_email(user)
         flash('Check your email for instructions on how to reset your password.')
         return redirect(url_for('login'))
-    return render_template('forms/passrequest.html', form=form)
+    return render_template('forms/passrequest.html', form=form, title="Forgot Password?")
 
 @app.route('/reset/<token>', methods=['GET', 'POST'])
 def reset_password(token):
@@ -72,4 +72,4 @@ def reset_password(token):
         db.session.commit()
         flash('Your password has been reset.')
         return redirect(url_for('login'))
-    return render_template('forms/passreset.html', form=form)
+    return render_template('forms/passreset.html', form=form, title="Reset Password")

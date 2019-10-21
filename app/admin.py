@@ -12,7 +12,8 @@ def admin_home():
     users = User.query.order_by(User.id)
     quotes = Quote.query.order_by(Quote.id)
     speakers = Speaker.query.order_by(Speaker.id)
-    return render_template('admin/dash.html', users=users, quotes=quotes, speakers=speakers)
+    return render_template('admin/dash.html', users=users, quotes=quotes,
+        speakers=speakers, title='Admin Home')
 
 ###                                 ###
 # User Promotion/Demotion/Destruction #
