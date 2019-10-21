@@ -17,7 +17,7 @@ mail = SendGrid(app)
 from app import models, forms, \
         account, admin, profile, \
         quotes, index, policies, \
-        email
+        email, wallpaper
 
 @app.errorhandler(404)
 def not_found(error):
@@ -30,4 +30,3 @@ def not_found(error):
 @app.errorhandler(403)
 def forbidden(error):
     return render_template('forbidden.html'), 403
-
