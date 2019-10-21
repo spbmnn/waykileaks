@@ -13,9 +13,22 @@
 <hr>
 <h3 id="everything">Everything, Everything</h3>
 <h4>Users</h4>
+<h5>Fenestrated</h5>
+<p>
 {% for user in users %}
-{% include "widgets/user.html" %}
+{% if user.alive %}
+<a href="{{ url_for('user_profile', username=user.username) }}">{{ user.username }}</a><br>
+{% endif %}
 {% endfor %}
+</p>
+<h5>Defenestrated</h5>
+<p>
+{% for user in users %}
+{% if not user.alive %}
+<a href="{{ url_for('user_profile', username=user.username) }}">{{ user.username }}</a> &lt;{{ user.email }}&gt;<br>
+{% endif %}
+{% endfor %}
+</p>
 <h4>Speakers</h4>
 {% for speaker in speakers %}
 <a href="/speaker/{{ speaker.id }}">{% if speaker.quotes|length == 0 %}
