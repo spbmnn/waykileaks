@@ -46,9 +46,16 @@ class User(UserMixin, db.Model):
                 count += 1
         return count
 
+    def get_denied_count(self):
+        count = 0
+        for quote in self.submissions:
+            if quote.moderated and not quote.published:
+                count += 1
+        return count
+
     def get_approved_percentage(self, format_100=False):
         try:
-            pct = self.get_approved_count() / self.get_submitted_count()
+            pct = self.get_approved_count() / (self.get_approved_count() + self.get_denied_count())
         except ZeroDivisionError:
             pct = 0.0
         if format_100:
@@ -58,10 +65,28 @@ class User(UserMixin, db.Model):
     def get_existence(self):
         return self.alive
 
+    def promotion_eligible(self, baroncount):
+        ''' Serf -> Baron approval requirements:
+            0. Is serf
+            1. 75% or higher approval rate
+            2. 20+ submitted posts
+            3. average upbrians meets moving requirement!
+        '''
+        if self.role != 1: return False # serfs only
+        if self.get_approved_percentage() < 0.75: return False
+            # Must have >75% approval rate
+        s = self.get_submitted_count()
+        if s < 20: return False
+        req = 1.1**(0.85*baroncount+1) + 1 # Starts at 2.1, gets more difficult
+        # (approx. 0.26 per existing baron up to 8 barons)
+        if self.get_karma()/s < req: return False
+        return True
+
     def get_password_reset_token(self, expires_in=600):
         return jwt.encode(
                 {'reset_password': self.id, 'exp': time() + expires_in},
                 app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+
 
     @staticmethod
     def verify_reset_password_token(token):

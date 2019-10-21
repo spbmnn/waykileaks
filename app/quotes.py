@@ -22,6 +22,17 @@ def submit():
         db.session.add(quote)
         db.session.commit()
         flash('Thanks for your quote on '+quote.topic+'!')
+        users = User.query
+        bc = 0
+        for u in users:
+            if u.role == 2:
+                bc += 1
+        if current_user.promotion_eligible(bc):
+            current_user.role = 2
+            flash('You have met the requirements to become a baron. \
+            You no longer require approval for your submissions.')
+            db.session.add(current_user)
+            db.session.commit()
         quote.upvote(current_user.id)
         return redirect(url_for('index'))
     return render_template('forms/submit.html', form=form)
