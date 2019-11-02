@@ -16,12 +16,13 @@
 {% if quote.moderated and not quote.published %}
 <em>This quote was removed for the reason: {{ quote.deny_reason }}</em>
 {% endif %}
-<small class="attr">posted by <a href="/user/{{ quote.submitter.username }}/">{{ quote.submitter.username }}</a>
+<p><small class="attr">posted by <a href="/user/{{ quote.submitter.username }}/">{{ quote.submitter.username }}</a>
+on {{ quote.created.strftime('%Y-%m-%dT%H:%M:%SZ') }}&nbsp;
 {% if not current_user.is_anonymous %}
 {% if current_user.role > 2 %}
 <a href="/approve/q/{{quote.id}}">accelerate</a>
 <a href="/deny/q/{{quote.id}}">reprobate</a>
 {% endif %}
 {% endif %}
-</small>
+</small></p>
 </section>
