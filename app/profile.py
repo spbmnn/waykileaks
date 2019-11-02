@@ -28,16 +28,17 @@ def user_profile(username):
 def quote_list():
     quoteresult = Quote.query.filter_by(published=True)
     quotes = []
-    for quote in quoteresult:
-        quotes.append(quote) # ew
-    hotornot = request.args.get('sort', 'hot', type=str)
-    if hotornot == 'top':
+    for quote in quoteresult: quotes.append(quote)
+    sort = request.args.get('sort', 'hot', type=str)
+    if sort == 'top':
         quotes.sort(key=lambda x: x.score, reverse=True)
-    else: # i guess we have to get hotness dynamically
+    elif sort == 'new':
+        quotes.sort(key=lambda x: x.id, reverse=True)
+    else:
         quotes.sort(key=lambda x: x.get_hotness(), reverse=True)
     #quotect = len(quotes)
     return render_template('profiles/qdir.html', quotes=quotes,
-        title='Quotes')
+        title='Quotes', sort=sort)
 
 @app.route('/quote/<id>/')
 def quote_page(id):

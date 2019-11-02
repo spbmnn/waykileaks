@@ -1,7 +1,29 @@
 {%extends "base.html"%}
 
 {%block content%}
-{%for quote in quotes%}
+{% if sort %}
+<p class="sortbar">
+{% if sort == 'hot' %}
+hot |
+<a href="{{ url_for('quote_list', sort='new')}}">new</a> |
+<a href="{{ url_for('quote_list', sort='top')}}">top</a>
+{% elif sort == 'new' %}
+<a href="{{ url_for('quote_list', sort='hot')}}">hot</a> |
+new |
+<a href="{{ url_for('quote_list', sort='top')}}">top</a>
+{% elif sort == 'top' %}
+<a href="{{ url_for('quote_list', sort='hot')}}">hot</a> |
+<a href="{{ url_for('quote_list', sort='new')}}">new</a> |
+top
+{% else %}
+<a href="{{ url_for('quote_list', sort='hot')}}">hot</a> |
+<a href="{{ url_for('quote_list', sort='new')}}">new</a> |
+<a href="{{ url_for('quote_list', sort='top')}}">top</a>
+{% endif %}
+</p>
+{% endif %}
+
+{% for quote in quotes %}
   {% include "widgets/quote.html" %}
 {% endfor %}
 {% endblock %}
