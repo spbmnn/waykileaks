@@ -34,6 +34,11 @@ class SubmitForm(FlaskForm):
     speaker = StringField('Speaker', validators=[DataRequired()])
     topic = StringField('On', validators=[DataRequired()])
     submit = SubmitField('Submit quote')
+    
+    def validate_quote(self, body):
+        oldq = Quote.query.filter_by(body=body).first()
+        if oldq is not None:
+            raise ValidationError('This quote has been submitted already.')
 
 class ResetPasswordRequestForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
