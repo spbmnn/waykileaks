@@ -141,7 +141,7 @@ class Quote(db.Model):
         td = self.created - datetime.now()
         td = td.total_seconds()
         k = self.score
-        o = log(max(abs(td), 1), 5)
+        o = log(max(abs(td), 1), 2)
         s = 1 if k > 0 else -1 if k < 0 else 0
         return round(s*o+(td/45000), 7)
 

@@ -3,6 +3,7 @@ from flask_login import current_user, login_required
 from app import app, db, email
 from app.forms import DenyQuoteForm
 from app.models import User, Speaker, Quote
+from datetime import datetime
 
 @app.route('/admin/')
 @login_required
@@ -109,6 +110,7 @@ def approve_quote(id):
     quote = Quote.query.filter_by(id=id).first_or_404()
     quote.published = True
     quote.moderated = True
+    quote.created = datetime.utcnow
     db.session.add(quote)
     db.session.commit()
     flash('Quote #' + str(id) + ' has been approved.')
