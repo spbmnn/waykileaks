@@ -110,7 +110,7 @@ def approve_quote(id):
     quote = Quote.query.filter_by(id=id).first_or_404()
     quote.published = True
     quote.moderated = True
-    quote.created = datetime.utcnow
+    quote.created = datetime.utcnow()
     db.session.add(quote)
     db.session.commit()
     flash('Quote #' + str(id) + ' has been approved.')
