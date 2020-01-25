@@ -101,6 +101,19 @@ def unban(username):
 # Quote Approval/Denial #
 ###                   ###
 
+@app.route('/approve/all/')
+@login_required
+def approve_all():
+    if current_user.role < 3:
+        return render_template('forbidden.html'), 403
+    quotes = Quote.query.filter_by(moderated=False)
+    for q in quotes:
+        q.moderated = True
+        q.approve = True
+        db.session.add(q)
+        flash('Quote ' + str(q.id) + ' approved')
+    db.session.commit()
+
 @app.route('/approve/q/<id>/')
 @login_required
 def approve_quote(id):
