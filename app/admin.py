@@ -109,7 +109,7 @@ def approve_all():
     quotes = Quote.query.filter_by(moderated=False)
     for q in quotes:
         q.moderated = True
-        q.approve = True
+        q.approved = True
         db.session.add(q)
         flash('Quote ' + str(q.id) + ' approved')
     db.session.commit()
